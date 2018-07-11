@@ -17,7 +17,7 @@ jobs:
         - curl -fsSL https://github.com/genuinetools/img/releases/download/v0.4.7/img-linux-amd64 -o img
         # Verify the sha256sum
         - export SHASUM=$(curl -fsSL https://github.com/genuinetools/img/releases/download/v0.4.7/img-linux-amd64.sha256 | awk '{ print $1 }')
-        - if [ "$SHASUM" != "$(shasum -a 256 /usr/local/bin/img | awk '{ print $1 }')" ]; then echo "sha256sum mismatch!"; exit 1; fi
+        - if [ "$SHASUM" != "$(shasum -a 256 img | awk '{ print $1 }')" ]; then echo "sha256sum mismatch!"; exit 1; fi
         - chmod a+x img
       script:
         - ./img build -t rycus86/try-img .
