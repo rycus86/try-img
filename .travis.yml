@@ -12,6 +12,10 @@ jobs:
         - nose2 -v --with-coverage --coverage-report term-missing
 
     - stage: deploy
+      addons:
+        apt:
+          packages:
+            - uidmap
       install:
         # Install latest img binary
         - curl -fsSL https://github.com/genuinetools/img/releases/download/v0.4.7/img-linux-amd64 -o img
@@ -21,6 +25,8 @@ jobs:
         - chmod a+x img
         # set up runc
         - curl -fsSL -o runc https://github.com/opencontainers/runc/releases/download/v1.0.0-rc5/runc.amd64 && chmod +x runc
+        - PATH=`pwd`:$PATH runc version
+        - PATH=`pwd`:$PATH IMG_DISABLE_EMBEDDED_RUNC=1 img version
       script:
         - PATH=`pwd`:$PATH IMG_DISABLE_EMBEDDED_RUNC=1 ./img build -t rycus86/try-img .
       after_success:
